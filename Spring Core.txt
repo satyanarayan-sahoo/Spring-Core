@@ -1,0 +1,310 @@
+                                                         Spring Core
+                                                         ===========
+1.What is Spring?
+=================
+->Spring is an open source, lightweight, loosely coupled, aspect oriented, dependency injection based java application 
+  framework to develop various java applications.
+->Along with spring software installation we get its source code. This makes spring as open source.
+->Open source software are not only free software, they also expose their source code along with installation.
+->Spring is lightweight because,
+  -Spring framework comes as zip file having less size.
+  -Spring gives 2 lightweight containers which can be activated anywhere in the application.
+->If degree of dependency is less between components, then they are called loosely coupled components.
+->The frameworks that support pojo/poji model programming are called non invasive frameworks or light weight frameworks.
+->Spring is one of the most widely used Java EE framework. Spring framework core concepts are “Dependency Injection” and 
+  “Aspect Oriented Programming”.
+->Spring framework can be used in normal java applications also to achieve loose coupling between different components by 
+  implementing dependency injection and we can perform cross-cutting tasks such as logging and authentication using spring 
+  support for aspect-oriented programming.
+
+2.What is Dependency Lookup?
+============================
+->If the resource/class/Object is searching and getting is dependent values from other resources of project then it is 
+  called dependency lookup. Here the resource pulls the dependent values.
+->The way we get Objects from Jndi registry is called "Dependency lookup.
+->The way we get Jdbc connection Object from jdbc Connection pool is called "Dependency Lookup".
+
+3.What is POJO class(Plain Old Java Object class)?
+==================================================
+->The java class without any specialities. i.e;It is an ordinary java class.
+->While developing this class we need not to follow any serious rules.
+->The java class that is not extending from technology or framework api class and not implementing technology/framework.
+Ex: class Demo{
+     ....
+    }
+
+4.What is POJI(Plain Old Java Interface)?
+=========================================
+->It indicates an interface without any specialities. i.e; an ordinary interface.
+->The interface that is not extending from technology or framework api interface is called POJI.
+Ex: interface Test{
+       ....
+    }
+
+5.What is Java Bean?
+====================
+->It is a java class that is developed with some standards.The standards are:
+->Must be public class should not be abstract class or final class.
+->Can implements Serializable(I) if needed.
+->Must hava direct or indirect 0-param cunstructor.
+->Member bean property should have setter and getter method.
+
+6.What is Spring Bean?
+======================
+->The java class whose object is created and managed by spring container is called spring Bean.
+->Spring Bean can be pojo class, java bean class. Bean/component class, but its object must be created and managed by 
+  spring container.
+->Spring Bean can be user-defined class/pre-defined class/third party supplied class.
+->Generally We can't take abstract class/interface.as spring Bean because we can't create object for abstract class and 
+  interface.
+->To make java class as spring Bean it must be configured in spring bean configuration file (xml) to make spring container 
+  to create and manage that spring Bean class object. 
+->Spring gives two light weight container which can be started in any application by just creating object for pre-defined 
+  classes.
+->Any java class or application that can managed the life cycle of given resource (class) is called container.
+
+7.What is IOC Container?
+========================
+->IOC stands for Inversion of control.
+->The Spring container is the core of the Spring Framework. The container will create the objects, wire them together, 
+  configure them, and manage their complete life cycle from creation to till destruction. The Spring container uses DI to 
+  manage the components that make up an application. 
+->Spring IOC is the mechanism to achieve loose coupling and dynamic binding of the objects at runtime.
+->BeanFactory is the root interface of Spring IOC container. ApplicationContext is the child interface of BeanFactory 
+  interface.
+
+8.Spring Containers
+===================
+(i)What is BeanFactory (Basic container)
+----------------------------------------
+->Performs spring bean management and dependency injection.
+->BeanFactory Container means it is the IOC container that is created by creating BeanFactory object.
+->To activate/start BeanFactory container, we should create object of a class that implements "BeanFactory(I)" interface.
+Ex: BeanFactory factory=new XmlBeanFactory(<Resource obj>);
+                                            ->Resource object points to the Spring bean config file(Xml file)
+
+(ii)Waht is Application Context (Advanced Container)
+----------------------------------------------------
+->Internally it uses BeanFactory container because it is the child interface of BeanFactory.so it can perform advanced 
+  operations along with Bean management and dependency injection.
+->Application Context Container means it is the IOC container that is created ApplicationContext object.
+->ApplicationContext object is the object of java class that implements org.springframework.context.ApplicationContext(I) .
+  It is the sub interface of BeanFactory(I).
+->To activate/start ApplicationContext container, we should create object of a class that implements "ApplicationContext(I)" 
+  interface.
+->ApplicationContext container can perform all the operations of BeanFactory container and also perform these additional 
+  operations:
+  -Pre-instantiation of singleton scope Beans.
+  -Ability to start,stop and close container.
+->While working with BeanFactory container the container instantiates spring bean only when factory.getBean() method is 
+  called (for any scope bean).While working with ApplicationContext container the singleton scope beans will be instantiated 
+  at the moment when the container is started. This is called Pre-instantiation of singleton Beans (Also called Eager 
+  instantiation).
+->If prototype scope bean is dependent to singleton scope, then prototype scope bean will also be pre-instantiated to support
+  dependency Injection on singleton scope bean. But it doesn't mean prototype bean scope has changed scope to "Singleton". 
+  Bean pre-instantiation is very much similar to enabling <load-on-startup> on servlet.
+->There are three popular implementation classes for ApplicationContext(I) using which we can create ApplicationContext 
+  container(IOC container):
+
+(a)FileSystemXmlApplicationContext
+----------------------------------
+->Creates ApplicationContext container by locating spring bean configuration file from the specified path of File System.
+Ex: ApplicationContext ctx=new FileSystemXmlApplicationContext("src/com.nt/cfgs/applicationContext.xml");
+
+(b)ClassPathXmlApplicationContext
+---------------------------------
+->Create ApplicationContext container by locating spring bean configuration file from the directories and jar files added to
+  classpath.
+Ex: Application Context ctx=new ClassPathXmlApplicationContext("applicationContext.xml");
+
+(c)AnnotationConfigApplicationContext
+-------------------------------------
+->Creates ApplicationContext IOC container by using given configuration class alternate to spring bean configuration 
+  file(xml).It is Useful in 100P code approach based spring application develop.
+Ex: ApplicationContext ctx=new AnnotationConfigApplicationContext(AppConfig.xml);
+
+9.What is Dependency Injection?
+===============================
+->Dependency Injection is the main functionality provided by Spring IOC(Inversion of Control). 
+->The Spring Container is responsible for injecting dependencies through either Constructor or Setter methods. 
+->If underlying server/container assigns/injects dependent values to resource/class/object dynamically at runtime then it 
+  is called dependency injection.
+->Here dependent values will be pushed to the resource.
+->The design principle of Inversion of Control providing the Java classes independent of each other and the container manage 
+  from object creation to destruction.
+->Dependency Injection in Spring also provides loose-coupling between the classes.
+Ex: JVM calling constructor automatically to assign initial values of object when object is created.
+
+(i)What is Setter Injection?
+----------------------------
+->Container calles setXXX(-) methods to injects dependent value.
+->When we go for setter injection container first creates target class object and then create dependent class object and 
+  call setter method of target class to assign dependent class object.
+Ex:  
+     @Component
+     public class Company {
+
+           private Department department;
+
+           // Setter method based DI
+           @Autowired
+           public void setDepartment(Department department) {
+               this.department = department;
+           }
+
+           public void showDepartmentInfo() {
+             department.showDepartmentInfo();
+           }
+      }
+
+(ii)What is Constructor Injection?
+----------------------------------
+->Container uses parameterized constructor to create bean class object and to inject the value to that object.
+->When we go for constructor injection container first creates dependent class object and then create target class object 
+  through parameterized constructor at that time it inject dependent class object to target class.
+Ex:
+     @Component
+     public class Company {
+
+         private Employee employee;
+
+         // Constructor based DI
+         @Autowired
+         public Company(Employee employee) {
+             this.employee = employee;
+         }
+
+        public void showEmployeeInfo() {
+           employee.showEmployeeInfo();
+        }
+     }
+
+Note
+----
+->If we configure both setter injection and constructor injection on bean property the values given by setter injection will
+  remain as final values of injection because setter(-) methods execute after constructor execution and overrides the values
+  injected by the constructor injection.
+
+10.When we should go for setter injection and when should we go for constructor injection?
+==========================================================================================
+->If bean class contains only one property or if all the properties of bean class should participate in dependency injection
+  then go for constructor injection, because construct injection is very faster than setter injection.
+->If Bean class contains more than one property and there is no need of making all properties participating in dependency 
+  injection, then we need to go for setter injection.
+
+11.Difference between Setter injection and constructor injection?
+=================================================================
+               Setter Injection                                 Constructor Injection
+               ================                                 =====================
+->Performs injection after creating Bean              ->Performs injection while creating Bean class object 
+  class obj so it is bit delayed injection.             so no delay in injection.
+-> <property> tag is required.                        -> <constructor-arg> tag is required.
+->Detects the setter method based on given            ->Detects the constructor parameters based on 
+  XXXword of setxxx() method.                           order or index or type or name.
+->Bit slower than constructor injection.              ->Bit fast than setter injection
+->Here first target object will be created then       ->Here first dependent object will be created then
+  dependent object wil be created.                      target object will be created.
+->To perform setter injection on "n-properties"       ->To perform constructor injection on n properties in all
+  In all angles "n-setter" methods are required.        angles n! constructors are required.
+
+12.What are Spring Bean Scopes?
+===============================
+->We can make IOC container keeping our spring bean class objects in different scopes. They are:
+
+(a)Singleton
+------------
+->The java class that allowed to create only one object per jvm is called singleton java class.
+->Instead of creating multiple objects with same data or no data,create one object and access it for multiple times for this 
+  takes the class as Singleton.
+->Defining a bean with singleton scope means the container creates a single instance of that bean, and all requests for that  
+  bean name will return the same object.
+->Returns same bean class object for all factory.getBean(-) method calls with same bean id.
+->The Default scope of spring bean is "singleton".
+
+(b)Prototype
+------------
+->Returns seperate bean class object for every factory.getBean(-) method call.
+->A bean with prototype scope will return a different instance every time it is requested from the container.
+
+c)Request
+---------
+->Bean class object is specific to each request.
+->This is same as prototype scope, however it’s meant to be used for web applications. A new instance of the bean will be 
+  created for each HTTP request.
+
+d)Session
+---------
+->Bean class object is visible through out session.
+->A new bean will be created for each HTTP session by the container.
+
+e)GlobalSession
+---------------
+->Specific to portlets environment Use "scope" attribute of <bean> tag to specify bean scope.
+->GlobalSessoin is removed in spring 3.x and 4.x version.
+->This is used to create global session beans for Portlet applications.
+
+Note: request, session scopes can be used only in spring MVC applications.
+
+13.What is Spring Bean Lifecycle?
+=================================
+->Keeping tracking all the activities from birth (Object creation) to death (object destruction) is called Bean life cycle.
+->It talks about spring bean Class object creation to destruction.
+->Spring IOC container manages spring bean life cycle and raises two events:
+
+a)Initialization event(raises when IOC container creates bean class object and completes injections on that object).
+b)Destruction event(Raises when IOC container about to destroy our bean class object).
+
+->Spring Bean allows two lifecycle methods:
+a)init-method
+-------------
+->Executes after all dependent values are injected. So it can be used to verify wheather injections are done properly or not
+ (with appropriate values or not).
+
+b)destroy-method
+----------------
+->Executes when IOC container is about to destroy our bean class object. Useful to place uninitialization logics.
+
+14.Annotations
+==============
+(i)Spring Annotations
+---------------------
+@Override -->Tells to the compiler,this method is inherited method of superclass.It is a method level annotation.
+@Entity  -->Makes ordinary java bean as Hibernate domain class.It is a class level annotation.
+@Configuration -->This annotation indicates that the class has @Bean defination methods.And container can process the class
+                  and generate spring bean to use in the application.It is a class level annotation.
+@Order -->To make sorting order of an annotated component or bean.It is a class level annotation.
+@Autowired -->To autowired bean on the setter method and constructor method(By type ot By name).This annotation can be
+              applied field level,setter method level,constructor level and orbitary method level.
+              -If dependent bean is not available to perform dependency injection though autowiring then exception will be
+              raised when required is true.Default value is true.null will be assigned if required=false when dependent bean
+              configuration is not available.No exception will be rised.
+              -@Autowired annotation on private property bean class is internally uses reflection API code. 
+              Eg:  @Autowired(required=true)  or @Autowired(required=false)
+@Required -->To make dependency injection (setter injection) mandatory on properties we can use dependency-check activity.
+             This annotation can be applied only on method that to be setter method.
+@Qualifier -->While performing byType mode autowiring there is a possibility to getting ambiguity if multiple dependent are 
+              found to inject to target class.To overcome this problem we use @Qualifier(primary=true).
+              It is a property level annotation but can't use in constructor level.
+@Primary -->It povides higher performance to a bean when there are multiple beans of same type.It can be class level 
+            and method level. 
+@Scope -->To maintain the scope of the class.It is class level annotation.
+@Bean -->To declare a bean of a class.It is method level annotation.
+@Lazy -->To prevent the preinstantiation of singleton scope bean.It can be used in class level.
+@Value -->To passing the default value to the variable and method.It can be used in variable level and method level.  
+@Import -->To import configuration class.
+@ComponentScan -->scan the given package and find the spring bean which are configured with spring stereotype  annotation.
+
+Stereotype Annotations
+----------------------
+@Component -->To configure any java class as spring bean.This annotation can be used in class level.
+@Service -->Specialization of @Component ,useful to configure the java class of service layer.So it is same as @Component.
+@Controller -->Specialization of @Component ,useful to configure the java class as the controller in spring mvc app.
+               So it is same as @Component.
+@Repository -->Specialization of @Component ,useful to configure the DAO classes as spring bean.So it is same as @Component.
+
+Java Config Annotations
+-----------------------
+@Resource -->It is same as @Inject except constructor mode of auto wiring.
+@Inject -->It is given by java.Ability of performing byName/byType/Constructor mode of autowiring.Similar to @Autowired.
+           @Inject instead of Spring’s @Autowired to inject a bean.
+@Named -->@Named instead of Spring’s @Component to declare a component or Spring bean.
